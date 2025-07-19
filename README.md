@@ -27,6 +27,20 @@ BuildByte is a Django-based web application that allows users to customize and c
 
 ---
 
+📸 Screenshots
+
+🔹 Homepage
+   ![Homepage](images/Homepage.png)
+
+🔹Loginpage
+   ![Loginpage](images/loginpage.png)
+
+🔹 PC Component selection
+   ![Builder](images/componenet_selection.png)
+   
+🔹 Products List
+   ![Products](images/products.png)
+   
 🚀 Getting Started (Run Locally)
 
 To run this project locally on your system:
