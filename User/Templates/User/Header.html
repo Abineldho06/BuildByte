@@ -1,0 +1,185 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Untree.co">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap4" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'Main/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'Main/css/tiny-slider.css' %}" rel="stylesheet">
+    <link href="{% static 'Main/css/style.css' %}" rel="stylesheet">
+    <title>Build Byte</title>
+</head>
+
+<body>
+
+    <!-- Start Header/Navigation -->
+    <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'User:homepage' %}">
+                <img src="{% static 'Main/images/logo.png' %}" alt="BuildByte Logo" class="logo-img" style="height: 30px; margin-right: 8px;">
+                BuildByte<span>.</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsFurni">
+                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'User:homepage' %}">Home</a>
+                    </li>
+                    <li><a class="nav-link" href="{% url 'User:chatpage' %}">Chat</a></li>
+                    <li><a class="nav-link" href="{% url 'User:viewmybookings' %}">Bookings</a></li>
+                    <li><a class="nav-link" href="{% url 'User:viewmycustombooking' %}">Custom CPU Bookings </a></li>
+                    <li><a class="nav-link" href="{% url 'User:complaint' %}">Complaint</a></li>
+                    <li><a class="nav-link" href="{% url 'User:feedback' %}">FeedBack</a></li>
+                </ul>
+
+                <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                    <li><a class="nav-link" href="{% url 'User:Myprofile' %}"><img
+                                src="{% static 'Main/images/user.svg' %}"></a></li>
+                    <li><a class="nav-link" href="{% url 'User:Mycart' %}"><img
+                                src="{% static 'Main/images/cart.svg' %}"></a></li>
+                    <li><a class="nav-link" href="{% url 'User:logout' %}"><svg xmlns="http://www.w3.org/2000/svg"
+                                height="20" width="20"
+                                viewBox="0 0 512 512">
+                                <path fill="#ffffff"
+                                    d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+                            </svg></a></li>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+    <!-- End Header/Navigation -->
+    <div style="padding-top: 2%; padding-bottom: 5%;">
+        
+    {% block content %}
+    {% endblock %}
+    
+</div>
+
+    <!-- Start Footer Section -->
+    <footer class="footer-section">
+        <div class="container relative">
+
+            <div class="sofa-img">
+                <img src="{% static 'Main/images/sofa.png' %}" alt="Image" class="img-fluid">
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="subscription-form">
+                        <h3 class="d-flex align-items-center"><span class="me-1"><img
+                                    src="{% static 'Main/images/envelope-outline.svg' %}" alt="Image"
+                                    class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+
+                        <form action="#" class="row g-3">
+                            <div class="col-auto">
+                                <input type="text" class="form-control" placeholder="Enter your name">
+                            </div>
+                            <div class="col-auto">
+                                <input type="email" class="form-control" placeholder="Enter your email">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary">
+                                    <span class="fa fa-paper-plane"></span>
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-5 mb-5">
+                <div class="col-lg-4">
+                    <div class="mb-4 footer-logo-wrap"><a href="{% url 'User:homepage' %}" class="footer-logo">BuildByte<span>.</span></a></div>
+                    <p class="mb-4">"Customize.
+                        Optimize.
+                        Powerup."</p>
+
+                    <ul class="list-unstyled custom-social">
+                        <li><a href="{% url 'User:homepage' %}"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                        <li><a href="{% url 'User:homepage' %}"><span class="fa fa-brands fa-twitter"></span></a></li>
+                        <li><a href="{% url 'User:homepage' %}"><span class="fa fa-brands fa-instagram"></span></a></li>
+                        <li><a href="{% url 'User:homepage' %}"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="row links-wrap">
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="{% url 'User:homepage' %}">About us</a></li>
+                                <li><a href="{% url 'User:homepage' %}">Services</a></li>
+                                <li><a href="{% url 'User:homepage' %}">Blog</a></li>
+                                <li><a href="{% url 'User:homepage' %}">Contact us</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="{% url 'User:homepage' %}">Support</a></li>
+                                <li><a href="{% url 'User:homepage' %}">Knowledge base</a></li>
+                                <li><a href="{% url 'User:homepage' %}">Live chat</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-6 col-sm-6 col-md-3">
+                            <ul class="list-unstyled">
+                                <li><a href="{% url 'User:homepage' %}">Jobs</a></li>
+                                <li><a href="{% url 'User:homepage' %}">Our team</a></li>
+                                <li><a href="{% url 'User:homepage' %}">Leadership</a></li>
+                                <li><a href="{% url 'User:homepage' %}">Privacy Policy</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-top copyright">
+                <div class="row pt-4">
+                    <div class="col-lg-6">
+                        <p class="mb-2 text-center text-lg-start">Copyright ©
+                            <script>document.write(new Date().getFullYear());</script>. All Rights Reserved. —
+                            Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a
+                                href="https://themewagon.com">ThemeWagon</a>
+                        </p>
+                    </div>
+
+                    <div class="col-lg-6 text-center text-lg-end">
+                        <ul class="list-unstyled d-inline-flex ms-auto">
+                            <li class="me-4"><a href="{% url 'User:homepage' %}">Terms & Conditions</a></li>
+                            <li><a href="{% url 'User:homepage' %}">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <!-- End Footer Section -->
+
+    <script src="{% static 'Main/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'Main/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'Main/js/custom.js' %}"></script>
+</body>
+
+</html>

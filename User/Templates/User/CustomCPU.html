@@ -1,0 +1,214 @@
+{% extends "User/Header.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Custom styles for the select components page */
+    .components-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+        min-height: 100vh;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+    }
+
+    .components-header {
+        color: #000000;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .component-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .component-img {
+        width: 100%;
+        height: 250px; /* Square images: height equals width (set by flex container) */
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Hover shade effect */
+    .component-wrapper::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 250px; /* Matches square image height */
+        background: rgba(0, 0, 0, 0);
+        border-radius: 10px;
+        transition: background 0.3s ease;
+        pointer-events: none;
+    }
+
+    .component-wrapper:hover::after {
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    .component-title {
+        color: #000000;
+        font-weight: 600;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .btn-custom-view {
+        background-color: #15a7a7;
+        border-color: #ffffff;
+        color: #fff;
+        padding: 0.75rem 2rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        font-size: 1.1rem;
+    }
+
+    .btn-custom-view:hover {
+        background-color: #060606;
+        border-color: #1e8799;
+        transform: scale(1.05);
+    }
+
+    .row.g-4 {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .col-md-4 {
+        flex: 0 0 30%;
+        max-width: 30%;
+        padding: 0 10px;
+        margin-bottom: 2rem;
+    }
+
+    @media (max-width: 992px) {
+        .col-md-4 {
+            flex: 0 0 45%;
+            max-width: 45%;
+        }
+        .component-img,
+        .component-wrapper::after {
+            height: 200px; /* Smaller square for tablets */
+        }
+    }
+
+    @media (max-width: 576px) {
+        .col-md-4 {
+            flex: 0 0 80%;
+            max-width: 80%;
+        }
+        .component-img,
+        .component-wrapper::after {
+            height: 280px; /* Larger square for mobile */
+        }
+    }
+</style>
+
+<div class="container-fluid components-container">
+    <h3 class="text-center components-header mb-5">Select the Components</h3>
+    <div class="row g-4 justify-content-center">
+        <!-- Motherboard -->
+        <div class="col-md-4">
+            <a href="{% url 'User:selectmotherboard' %}" class="text-decoration-none">
+                <div class="component-wrapper">
+                    <img src="{% static 'Assets/motherboard.jpg' %}" class="component-img" alt="Motherboard">
+                    <p class="component-title">Motherboard</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Processor -->
+        <div class="col-md-4">
+            <a href="{% url 'User:selectprocessor' %}" class="text-decoration-none">
+                <div class="component-wrapper">
+                    <img src="{% static 'Assets/processor.jpg' %}" class="component-img" alt="Processor">
+                    <p class="component-title">Processor</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Case -->
+        <div class="col-md-4">
+            <a href="{% url 'User:selectcase' %}" class="text-decoration-none">
+                <div class="component-wrapper">
+                    <img src="{% static 'Assets/case.jpg' %}" class="component-img" alt="Case">
+                    <p class="component-title">Case</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Case Cooler -->
+        <div class="col-md-4">
+            <a href="{% url 'User:selectcasecooler' %}" class="text-decoration-none">
+                <div class="component-wrapper">
+                    <img src="{% static 'Assets/case cooler.jpg' %}" class="component-img" alt="Case Cooler">
+                    <p class="component-title">Case Cooler</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Graphics Card -->
+        <div class="col-md-4">
+            <a href="{% url 'User:selectgraphicscard' %}" class="text-decoration-none">
+                <div class="component-wrapper">
+                    <img src="{% static 'Assets/graphics card.jpg' %}" class="component-img" alt="Graphics Card">
+                    <p class="component-title">Graphics Card</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- CPU Cooler -->
+        <div class="col-md-4">
+            <a href="{% url 'User:selectcpucooler' %}" class="text-decoration-none">
+                <div class="component-wrapper">
+                    <img src="{% static 'Assets/cpu cooler.jpg' %}" class="component-img" alt="CPU Cooler">
+                    <p class="component-title">CPU Cooler</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- RAM -->
+        <div class="col-md-4">
+            <a href="{% url 'User:selectram' %}" class="text-decoration-none">
+                <div class="component-wrapper">
+                    <img src="{% static 'Assets/ram.jpg' %}" class="component-img" alt="RAM">
+                    <p class="component-title">RAM</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- ROM -->
+        <div class="col-md-4">
+            <a href="{% url 'User:selectrom' %}" class="text-decoration-none">
+                <div class="component-wrapper">
+                    <img src="{% static 'Assets/rom.jpg' %}" class="component-img" alt="ROM">
+                    <p class="component-title">ROM</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Power Supply -->
+        <div class="col-md-4">
+            <a href="{% url 'User:selectpowersupply' %}" class="text-decoration-none">
+                <div class="component-wrapper">
+                    <img src="{% static 'Assets/power supply.jpg' %}" class="component-img" alt="Power Supply">
+                    <p class="component-title">Power Supply</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{% url 'User:viewcustomisedcomponents' %}" class="btn btn-custom-view">
+            View Selected Components
+        </a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,482 @@
+{% extends 'User/Header.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Custom styles for the build cart page */
+    .components-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+        min-height: 100vh;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+    }
+
+    .components-header {
+        color: #000000;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .component-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        max-width: 900px; /* Constrain width like e-commerce listings */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .component-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Hover shade effect */
+    .component-card::after {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 200px; /* Matches square image */
+        height: 200px;
+        background: rgba(0, 0, 0, 0);
+        border-radius: 10px;
+        transition: background 0.3s ease;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .component-card:hover::after {
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    .component-img {
+        width: 200px; /* Square image */
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-right: 20px;
+    }
+
+    .component-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .component-category {
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+
+    .component-name {
+        color: #34495e;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .component-brand {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .component-details {
+        color: #34495e;
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+        line-height: 1.4;
+        max-height: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    .component-price {
+        color: #f1c40f;
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .action-btn {
+        padding: 6px 12px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-align: center;
+        min-width: 80px;
+    }
+
+    .btn-change {
+        background-color: #3498db;
+        color: #fff;
+        border: 1px solid #3498db;
+    }
+
+    .btn-change:hover {
+        background-color: #2980b9;
+        border-color: #2980b9;
+        transform: scale(1.05);
+    }
+
+    .btn-add {
+        background-color: #1c1a1a;
+        color: #fff;
+        border: 1px solid #000000;
+    }
+
+    .btn-add:hover {
+        background-color: #fffbfb;
+        border-color: #000000;
+        transform: scale(1.05);
+    }
+
+    .btn-remove {
+        background-color: #e74c3c;
+        color: #fff;
+        border: 1px solid #e74c3c;
+    }
+
+    .btn-remove:hover {
+        background-color: #c0392b;
+        border-color: #c0392b;
+        transform: scale(1.05);
+    }
+
+    .confirm-section {
+        max-width: 900px;
+        margin: 2rem auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px;
+    }
+
+    .total-amount {
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+
+    .confirm-btn {
+        background-color: #f1c40f;
+        border-color: #f1c40f;
+        color: #fff;
+        padding: 0.75rem 2rem;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        font-size: 1.1rem;
+    }
+
+    .confirm-btn:hover {
+        background-color: #d4ac0d;
+        border-color: #d4ac0d;
+        transform: scale(1.05);
+    }
+
+    .empty-message {
+        color: #34495e;
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .component-card {
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 100%;
+            padding: 10px;
+        }
+
+        .component-img {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 10px;
+        }
+
+        .component-card::after {
+            width: 150px;
+            height: 150px;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .component-info {
+            padding: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .component-category,
+        .component-name,
+        .component-brand,
+        .component-details,
+        .component-price,
+        .action-buttons {
+            margin-bottom: 8px;
+        }
+
+        .action-buttons {
+            justify-content: center;
+        }
+
+        .confirm-section {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .component-img {
+            width: 120px;
+            height: 120px;
+        }
+
+        .component-card::after {
+            width: 120px;
+            height: 120px;
+        }
+
+        .component-category {
+            font-size: 1rem;
+        }
+
+        .component-name {
+            font-size: 0.9rem;
+        }
+
+        .component-brand {
+            font-size: 0.8rem;
+        }
+
+        .component-details {
+            font-size: 0.75rem;
+            max-height: 50px;
+        }
+
+        .component-price {
+            font-size: 1.1rem;
+        }
+
+        .action-btn {
+            font-size: 0.8rem;
+            min-width: 70px;
+            padding: 5px 10px;
+        }
+    }
+</style>
+
+<div class="container-fluid components-container">
+    <h1 class="components-header">Selected Components</h1>
+
+    {% if cust.motherboard or cust.processor or cust.case or cust.casecooler or cust.graphicscard or cust.cpucooler or cust.powersupply or ram or rom %}
+    
+    <div class="component-list">
+        {% if cust.motherboard %}
+        <div class="component-card">
+            <img src="{{ cust.motherboard.motherboard_photo.url }}" class="component-img" alt="Motherboard">
+            <div class="component-info">
+                <div class="component-category">{{ cust.motherboard.brand.category.category_name }}</div>
+                <div class="component-name">{{ cust.motherboard.motherboard_name }}</div>
+                <div class="component-brand">Brand: {{ cust.motherboard.brand.brand_name }}</div>
+                <div class="component-details">{{ cust.motherboard.motherboard_details }}</div>
+                <div class="component-price">₹{{ cust.motherboard.motherboard_price }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'User:selectmotherboard' %}" class="action-btn btn-change">Change</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if cust.processor %}
+        <div class="component-card">
+            <img src="{{ cust.processor.processor_photo.url }}" class="component-img" alt="Processor">
+            <div class="component-info">
+                <div class="component-category">{{ cust.processor.brand.category.category_name }}</div>
+                <div class="component-name">{{ cust.processor.processor_name }}</div>
+                <div class="component-brand">Brand: {{ cust.processor.brand.brand_name }}</div>
+                <div class="component-details">{{ cust.processor.processor_details }}</div>
+                <div class="component-price">₹{{ cust.processor.processor_price }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'User:selectprocessor' %}" class="action-btn btn-change">Change</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if cust.case %}
+        <div class="component-card">
+            <img src="{{ cust.case.case_photo.url }}" class="component-img" alt="Case">
+            <div class="component-info">
+                <div class="component-category">{{ cust.case.brand.category.category_name }}</div>
+                <div class="component-name">{{ cust.case.case_name }}</div>
+                <div class="component-brand">Brand: {{ cust.case.brand.brand_name }}</div>
+                <div class="component-details">{{ cust.case.case_details }}</div>
+                <div class="component-price">₹{{ cust.case.case_price }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'User:selectcase' %}" class="action-btn btn-change">Change</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if cust.casecooler %}
+        <div class="component-card">
+            <img src="{{ cust.casecooler.casecooler_photo.url }}" class="component-img" alt="Case Cooler">
+            <div class="component-info">
+                <div class="component-category">{{ cust.casecooler.brand.category.category_name }}</div>
+                <div class="component-name">{{ cust.casecooler.casecooler_name }}</div>
+                <div class="component-brand">Brand: {{ cust.casecooler.brand.brand_name }}</div>
+                <div class="component-details">{{ cust.casecooler.casecooler_details }}</div>
+                <div class="component-price">₹{{ cust.casecooler.casecooler_price }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'User:selectcasecooler' %}" class="action-btn btn-change">Change</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if cust.graphicscard %}
+        <div class="component-card">
+            <img src="{{ cust.graphicscard.graphicscard_photo.url }}" class="component-img" alt="Graphics Card">
+            <div class="component-info">
+                <div class="component-category">{{ cust.graphicscard.brand.category.category_name }}</div>
+                <div class="component-name">{{ cust.graphicscard.graphicscard_name }}</div>
+                <div class="component-brand">Brand: {{ cust.graphicscard.brand.brand_name }}</div>
+                <div class="component-details">{{ cust.graphicscard.graphicscard_details }}</div>
+                <div class="component-price">₹{{ cust.graphicscard.graphicscard_price }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'User:selectgraphicscard' %}" class="action-btn btn-change">Change</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if cust.cpucooler %}
+        <div class="component-card">
+            <img src="{{ cust.cpucooler.cpucooler_photo.url }}" class="component-img" alt="CPU Cooler">
+            <div class="component-info">
+                <div class="component-category">{{ cust.cpucooler.brand.category.category_name }}</div>
+                <div class="component-name">{{ cust.cpucooler.cpucooler_name }}</div>
+                <div class="component-brand">Brand: {{ cust.cpucooler.brand.brand_name }}</div>
+                <div class="component-details">{{ cust.cpucooler.cpucooler_details }}</div>
+                <div class="component-price">₹{{ cust.cpucooler.cpucooler_price }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'User:selectcpucooler' %}" class="action-btn btn-change">Change</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if cust.powersupply %}
+        <div class="component-card">
+            <img src="{{ cust.powersupply.powersupply_photo.url }}" class="component-img" alt="Power Supply">
+            <div class="component-info">
+                <div class="component-category">{{ cust.powersupply.brand.category.category_name }}</div>
+                <div class="component-name">{{ cust.powersupply.powersupply_name }}</div>
+                <div class="component-brand">Brand: {{ cust.powersupply.brand.brand_name }}</div>
+                <div class="component-details">{{ cust.powersupply.powersupply_details }}</div>
+                <div class="component-price">₹{{ cust.powersupply.powersupply_price }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'User:selectpowersupply' %}" class="action-btn btn-change">Change</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% for i in ram %}
+        <div class="component-card">
+            <img src="{{ i.ram.ram_photo.url }}" class="component-img" alt="RAM">
+            <div class="component-info">
+                <div class="component-category">{{ i.ram.brand.category.category_name }}</div>
+                <div class="component-name">{{ i.ram.ram_name }}</div>
+                <div class="component-brand">Brand: {{ i.ram.brand.brand_name }}</div>
+                <div class="component-details">{{ i.ram.ram_details }}</div>
+                <div class="component-price">₹{{ i.ram.ram_price }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'User:selectram' %}" class="action-btn btn-add">Add</a>
+                    <a href="{% url 'User:deleteram' i.id %}" class="action-btn btn-remove">Remove</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% for i in rom %}
+        <div class="component-card">
+            <img src="{{ i.rom.rom_photo.url }}" class="component-img" alt="ROM">
+            <div class="component-info">
+                <div class="component-category">{{ i.rom.brand.category.category_name }}</div>
+                <div class="component-name">{{ i.rom.rom_name }}</div>
+                <div class="component-brand">Brand: {{ i.rom.brand.brand_name }}</div>
+                <div class="component-details">{{ i.rom.rom_details }}</div>
+                <div class="component-price">₹{{ i.rom.rom_price }}</div>
+                <div class="action-buttons">
+                    <a href="{% url 'User:selectrom' %}" class="action-btn btn-add">Add</a>
+                    <a href="{% url 'User:deleterom' i.id %}" class="action-btn btn-remove">Remove</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="confirm-section">
+        <div class="total-amount">Total Amount: ₹{{ total|floatformat:2 }}</div>
+        {% if cust.motherboard and cust.processor and cust.case and cust.casecooler and cust.graphicscard and cust.cpucooler and cust.powersupply and ram and rom %}
+            <a href="{% url 'User:confirmcustomising' cust.id %}" class="confirm-btn">Confirm Order</a>
+        {% endif %}
+    </div>
+    
+    {% else %}
+    <div class="empty-message">
+        <p>Your cart is empty. Start building your custom PC now!</p>
+    </div>
+    {% endif %}
+</div>
+
+{% if msgd %}
+<script>
+    alert("{{ msgd }}");
+    window.location = "{% url 'User:viewcustomisedcomponents' %}";
+</script>
+{% endif %}
+
+{% if msg %}
+<script>
+    alert("{{ msg }}");
+    window.location = "{% url 'User:viewmycustombooking' %}";
+</script>
+{% endif %}
+{% endblock %}

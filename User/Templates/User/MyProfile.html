@@ -1,0 +1,151 @@
+{% extends "User/Header.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Custom styles for the profile page */
+    .profile-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+        min-height: 100vh;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+    }
+
+    .profile-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 255, 247, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+    }
+
+    .profile-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(254, 0, 0, 0.15);
+    }
+
+    .profile-header {
+        background: #192950;
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+    .table th {
+        color: #34495e;
+        font-weight: 600;
+        width: 30%;
+        vertical-align: middle;
+    }
+
+    .table td {
+        color: #2c3e50;
+        vertical-align: middle;
+        transition: background 0.3s ease;
+    }
+
+    .table tr:hover td {
+        background: #f8f9fa;
+    }
+
+    .btn-custom-save {
+        background-color: #f1c40f;
+        border-color: #f1c40f;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-custom-save:hover {
+        background-color: #d4ac0d;
+        border-color: #d4ac0d;
+        transform: scale(1.05);
+    }
+
+    .btn-custom-cancel {
+        background-color: #95a5a6;
+        border-color: #95a5a6;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-custom-cancel:hover {
+        background-color: #7f8c8d;
+        border-color: #7f8c8d;
+        transform: scale(1.05);
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    @media (max-width: 576px) {
+        .profile-card {
+            margin: 0 1rem;
+        }
+
+        .btn-container {
+            flex-direction: column;
+        }
+
+        .btn-custom-save, .btn-custom-cancel {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="container-fluid profile-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h3 class="mb-0">Hello {{ data.user_name }}</h3>
+                </div>
+                <div class="card-body p-4">
+                    <table class="table table-borderless mb-0">
+                        <tr>
+                            <th>Name:</th>
+                            <td>{{ data.user_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td>{{ data.user_email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Address:</th>
+                            <td>{{ data.user_address }}</td>
+                        </tr>
+                        <tr>
+                            <th>Contact:</th>
+                            <td>{{ data.user_contact }}</td>
+                        </tr>
+                        <tr>
+                            <th>District:</th>
+                            <td>{{ data.place.district.district_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Place:</th>
+                            <td>{{ data.place.place_name }}</td>
+                        </tr>
+                    </table>
+                    <div class="btn-container mt-4">
+                        <a href="{% url 'User:Editprofile' %}" class="btn btn-custom-save">Edit Profile</a>
+                        <a href="{% url 'User:Changepassword' %}" class="btn btn-custom-cancel">Change Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'User/Header.html' %}
+
+{% block content %}
+
+<style>
+    .products-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 15px;
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin: 20px auto;
+        font-family: 'Arial', sans-serif;
+    }
+    .products-table th {
+        background: linear-gradient(45deg, #000000, #300847);
+        color: white;
+        padding: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+    .products-table td {
+        padding: 15px;
+        text-align: center;
+        background: white;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .products-table tr:hover td {
+        transform: translateY(-3px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .product-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+    }
+    .product-img:hover {
+        transform: scale(1.1);
+    }
+    .action-link {
+        display: inline-block;
+        padding: 8px 15px;
+        background: #17a88b;
+        color: white;
+        text-decoration: none;
+        border-radius: 20px;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .action-link:hover {
+        background: #1a9a9a;
+        transform: scale(1.05);
+    }
+
+    h3 {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 700;
+        color: #000000;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        animation: slideIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .products-table tbody tr {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+    @media (max-width: 768px) {
+        .products-table {
+            display: block;
+            overflow-x: auto;
+        }
+        .products-table th, .products-table td {
+            min-width: 120px;
+        }
+    }
+</style>
+
+<div class="container mt-5">
+    <h3 class="text-center mb-4">Booked Product</h3>
+        <div class="table-responsive">
+            <form method="POST">
+                {% csrf_token %}
+                <table class="products-table table table-striped table-hover align-middle text-center">
+                    <thead class="products-table">
+                        <tr>
+                            <th>#</th>
+                            <th>Product</th>
+                            <th>Details</th>
+                            <th>Photo</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in product %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.product.product_name }}</td>
+                            <td>{{ i.product.product_details }}</td>
+                            <td><img src="{{ i.product.product_photo.url }}" width="100" height="100" alt="Product Image"></td>
+                            <td>₹{{ i.product.product_price }}</td>
+                            <td>{{ i.cart_qty }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align: center;">No products booked.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+</div>
+{% endblock %}

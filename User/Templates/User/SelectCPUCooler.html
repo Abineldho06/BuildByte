@@ -1,0 +1,155 @@
+{% extends "User/Header.html" %}
+
+{% block content %}
+
+<style>
+    .products-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 15px;
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin: 20px auto;
+        font-family: 'Arial', sans-serif;
+    }
+    .products-table th {
+        background: linear-gradient(45deg, #000000, #300847);
+        color: white;
+        padding: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+    .products-table td {
+        padding: 15px;
+        text-align: center;
+        background: white;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .products-table tr:hover td {
+        transform: translateY(-3px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .product-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+    }
+    .product-img:hover {
+        transform: scale(1.1);
+    }
+    .action-link {
+        display: inline-block;
+        padding: 8px 15px;
+        background: #17a88b;
+        color: white;
+        text-decoration: none;
+        border-radius: 20px;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .action-link:hover {
+        background: #1a9a9a;
+        transform: scale(1.05);
+    }
+
+    h3 {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 700;
+        color: #000000;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        animation: slideIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .products-table tbody tr {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+    @media (max-width: 768px) {
+        .products-table {
+            display: block;
+            overflow-x: auto;
+        }
+        .products-table th, .products-table td {
+            min-width: 120px;
+        }
+    }
+</style>
+
+<div class="container mt-5">
+    <h3 class="text-center mb-4">CPU Coolers</h3>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <div class="input-group shadow">
+                    <input type="text" name="txt_name" id="txt_name" class="form-control" placeholder="Search CPU Coolers..." onkeyup="searchcpucooler()">
+                    <span class="input-group-text bg-dark text-white">🔍</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="result">
+            <div class="table-responsive">
+                <table class="products-table table table-striped table-hover align-middle text-center">
+                    <thead class="products-table">
+                        <tr>
+                            <th>#</th>
+                            <th>Photo</th>
+                            <th>Brand</th>
+                            <th>Name</th>
+                            <th>Details</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in cpuc %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><img src="{{ i.cpucooler_photo.url }}" class="product-img"></td>
+                            <td>{{ i.brand.brand_name }}</td>
+                            <td>{{ i.cpucooler_name }}</td>
+                            <td>{{ i.cpucooler_details }}</td>
+                            <td>₹{{ i.cpucooler_price }}</td>
+                            <td>
+                                <a href="{% url 'User:addcpucooler' i.id %}" class="btn btn-success btn-sm">Add</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'User:customcpu' %}";
+</script>
+{% endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+function searchcpucooler() {
+    var name = document.getElementById("txt_name").value;
+    var ur = "{% url 'User:ajaxsearchcpucooler' %}";
+    $.ajax({
+        url: ur,
+        data: { name: name },
+        success: function (data) {
+            $("#result").html(data);
+        },
+    });
+}
+</script>
+{% endblock %}

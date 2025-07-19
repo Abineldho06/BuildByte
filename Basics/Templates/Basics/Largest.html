@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Largest Number</title>
+</head>
+<body>
+    <form method="post" action="">
+        {% csrf_token %}
+    <h3 align="center">Largest Num</h3>
+    <table width="200" border="1" align="center">
+        <tr>
+            <td>No 1</td>
+            <td>
+                <input type="text" name="txt_num1">
+            </td>
+        </tr>
+        <tr>
+            <td>No 2</td>
+            <td>
+                <input type="text" name="txt_num2">
+            </td>
+        </tr>
+        <tr>
+            <td>No 3</td>
+            <td>
+                <input type="text" name="txt_num3">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" name="btn_submit" value="submit">
+            <td>
+        </tr>
+        <tr>
+            <td>Result</td>
+            <td>{{res}}</td>
+        </tr>
+    </form>
+</body>
+</html>

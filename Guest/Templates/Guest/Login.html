@@ -1,0 +1,400 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to BuildByte - Premium PC Building Components">
+    <meta name="theme-color" content="#0f0c29">
+    <title>BuildByte - Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.13/lottie.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #000000, #000000, #08080f);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background particles effect */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(31, 38, 135, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 950px;
+            max-width: 98%;
+            height: 600px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: scale(1.02);
+        }
+
+        .animation-side {
+            flex: 1;
+            padding: 40px;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(0, 255, 204, 0.05));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-side {
+            flex: 1;
+            padding: 60px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: #00ffcc;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.7), 0 0 30px rgba(0, 255, 204, 0.3);
+            animation: neon 1.5s ease-in-out infinite alternate;
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: #ffffff;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            font-size: 16px;
+            transition: all 0.4s ease;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+        }
+
+        input:invalid:focus {
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+        }
+
+        label {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffffff;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-size: 16px;
+        }
+
+        input:focus + label,
+        input:not(:placeholder-shown) + label {
+            top: -15px;
+            font-size: 12px;
+            opacity: 1;
+            color: #00ffcc;
+            background: rgba(15, 12, 41, 0.9);
+            padding: 2px 8px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 255, 204, 0.2);
+        }
+
+        .submit-btn {
+            background: linear-gradient(90deg, #00ffcc, #00e6b8);
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            color: #0f0c29;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .submit-btn:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 255, 204, 0.6);
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 15px;
+            background: rgba(255, 77, 77, 0.1);
+            padding: 8px;
+            border-radius: 5px;
+            animation: shake 0.5s ease;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 15px;
+            opacity: 0.9;
+            padding-top: 20px;
+            border-top: 1px solid rgba(36, 174, 148, 0.1);
+        }
+        .footer a {
+            color: #00ffcc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer a:hover {
+            opacity: 1;
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.7);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot-password a {
+            color: #00ffcc;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        @keyframes neon {
+            from { text-shadow: 0 0 10px rgba(0, 255, 204, 0.7); }
+            to { text-shadow: 0 0 25px rgba(0, 255, 204, 0.9); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                height: auto;
+                width: 90%;
+                margin: 20px;
+            }
+            .animation-side, .form-side {
+                padding: 30px;
+            }
+            .logo {
+                font-size: 36px;
+            }
+            .tagline {
+                font-size: 16px;
+            }
+            #lottie-animation {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="particles"></canvas>
+    <div class="login-container">
+        <div class="animation-side">
+            <div class="logo">BuildByte</div>
+            <div class="tagline">Craft Your Ultimate Rig</div>
+            <div id="lottie-animation" style="width: 300px; height: 300px;"></div>
+        </div>
+        <div class="form-side">
+            <form method="POST" action="" class="login-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="email" 
+                           name="txt_email" 
+                           id="txt_email" 
+                           placeholder=" " 
+                           autocomplete="email"
+                           required>
+                    <label for="txt_email">E-mail</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" 
+                           name="txt_pass" 
+                           id="txt_pass" 
+                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                           title="Must contain at least one number, one uppercase and lowercase letter, and 8+ characters" 
+                           placeholder=" " 
+                           autocomplete="current-password"
+                           required>
+                    <label for="txt_pass">Password</label>
+                </div>
+                <input type="submit" value="Login" name="btn_sub" class="submit-btn">
+                {% if msg %}
+                    <div class="error-message">{{ msg }}</div>
+                {% endif %}
+            </form>
+            <div class="footer">
+                Don't have an account? <a href="{% url 'Guest:Registration' %}">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //\\[2]: // Particle Background
+        const canvas = document.querySelector('.particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particlesArray = [];
+        const numberOfParticles = 50;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 255, 204, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < numberOfParticles; i++) {
+            particlesArray.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Lottie Animation
+        try {
+            const animation = bodymovin.loadAnimation({
+                container: document.getElementById('lottie-animation'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: "{% static 'Animation - 1743873798975.json' %}"
+            });
+        } catch (error) {
+            console.error('Lottie animation failed:', error);
+        }
+
+        // Form enhancements
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('invalid', (e) => {
+                e.preventDefault();
+                input.classList.add('error');
+            });
+            input.addEventListener('input', () => {
+                input.classList.remove('error');
+            });
+        });
+
+        // Alert fallback
+        {% if msg and not msg_in_div %}
+            alert("{{msg}}");
+            window.location="{% url 'Guest:login' %}";
+        {% endif %}
+    </script>
+</body>
+</html>

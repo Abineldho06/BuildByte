@@ -1,0 +1,422 @@
+{% extends 'Admin/Header.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BuildByte</title>
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #000000 0%, #000000 100%);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .bubble-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+            margin: 2rem auto;
+            max-width: 1400px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h3 {
+            font-weight: 700;
+            color: #000000;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.8s ease-out;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .table-container {
+            background: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-responsive {
+            max-height: 600px; /* Adjust based on content */
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #6c757d #e9ecef;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #e9ecef;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background-color: #6c757d;
+            border-radius: 10px;
+        }
+
+        .table {
+            margin-bottom: 0;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table th {
+            background: linear-gradient(45deg, #550d78, #000000);
+            color: #ffffff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            padding: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border: none;
+        }
+
+        .table td {
+            padding: 10px;
+            font-size: 0.95rem;
+            color: #34495e;
+            border: none;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+
+        .table tr:hover td {
+            background-color: #f1f5f9;
+        }
+
+        .table img {
+            border-radius: 8px;
+            object-fit: cover;
+            max-width: 80px;
+            max-height: 80px;
+        }
+
+        .user-details {
+            background: #f8f9fa;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .total-amount {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-top: 1rem;
+            text-align: right;
+        }
+
+        .action-links .btn {
+            margin: 0 10px;
+            border-radius: 10px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #000000, #7117a8);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #dc3545, #b02a37);
+            border: none;
+        }
+
+        .btn-danger:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+
+            .table th, .table td {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+
+            .table img {
+                max-width: 60px;
+                max-height: 60px;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            .total-amount {
+                font-size: 1rem;
+            }
+
+            .action-links .btn {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas class="bubble-canvas" id="bubbleCanvas"></canvas>
+
+    {% for i in cust %}
+    <div class="container">
+        <h3 class="text-center">Custom PC Request</h3>
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th>User Details</th>
+                            <th>Category</th>
+                            <th>Photo</th>
+                            <th>Brand</th>
+                            <th>Name</th>
+                            <th>Details</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="user-details" rowspan="{% with ram_count=i.ram.count rom_count=i.rom.count %}{{ ram_count|add:rom_count|add:7 }}{% endwith %}">
+                                {{ i.user.user_name }}<br>
+                                {{ i.user.user_email }}<br>
+                                {{ i.user.user_address }}<br>
+                                {{ i.user.user_contact }}<br>
+                                {{ i.user.place.place_name }}<br>
+                                {{ i.user.place.district.district_name }}
+                            </td>
+
+                            {% if i.motherboard %}
+                            <td>{{ i.motherboard.brand.category.category_name }}</td>
+                            <td><img src="{{ i.motherboard.motherboard_photo.url }}" alt="Motherboard" width="80" height="80"></td>
+                            <td>{{ i.motherboard.brand.brand_name }}</td>
+                            <td>{{ i.motherboard.motherboard_name }}</td>
+                            <td>{{ i.motherboard.motherboard_details }}</td>
+                            <td>₹{{ i.motherboard.motherboard_price }}</td>
+                        </tr>
+                            {% endif %}
+
+                            {% if i.processor %}
+                            <tr>
+                                <td>{{ i.processor.brand.category.category_name }}</td>
+                                <td><img src="{{ i.processor.processor_photo.url }}" alt="Processor" width="80" height="80"></td>
+                                <td>{{ i.processor.brand.brand_name }}</td>
+                                <td>{{ i.processor.processor_name }}</td>
+                                <td>{{ i.processor.processor_details }}</td>
+                                <td>₹{{ i.processor.processor_price }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% if i.case %}
+                            <tr>
+                                <td>{{ i.case.brand.category.category_name }}</td>
+                                <td><img src="{{ i.case.case_photo.url }}" alt="Case" width="80" height="80"></td>
+                                <td>{{ i.case.brand.brand_name }}</td>
+                                <td>{{ i.case.case_name }}</td>
+                                <td>{{ i.case.case_details }}</td>
+                                <td>₹{{ i.case.case_price }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% if i.casecooler %}
+                            <tr>
+                                <td>{{ i.casecooler.brand.category.category_name }}</td>
+                                <td><img src="{{ i.casecooler.casecooler_photo.url }}" alt="Case Cooler" width="80" height="80"></td>
+                                <td>{{ i.casecooler.brand.brand_name }}</td>
+                                <td>{{ i.casecooler.casecooler_name }}</td>
+                                <td>{{ i.casecooler.casecooler_details }}</td>
+                                <td>₹{{ i.casecooler.casecooler_price }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% if i.graphicscard %}
+                            <tr>
+                                <td>{{ i.graphicscard.brand.category.category_name }}</td>
+                                <td><img src="{{ i.graphicscard.graphicscard_photo.url }}" alt="Graphics Card" width="80" height="80"></td>
+                                <td>{{ i.graphicscard.brand.brand_name }}</td>
+                                <td>{{ i.graphicscard.graphicscard_name }}</td>
+                                <td>{{ i.graphicscard.graphicscard_details }}</td>
+                                <td>₹{{ i.graphicscard.graphicscard_price }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% if i.cpucooler %}
+                            <tr>
+                                <td>{{ i.cpucooler.brand.category.category_name }}</td>
+                                <td><img src="{{ i.cpucooler.cpucooler_photo.url }}" alt="CPU Cooler" width="80" height="80"></td>
+                                <td>{{ i.cpucooler.brand.brand_name }}</td>
+                                <td>{{ i.cpucooler.cpucooler_name }}</td>
+                                <td>{{ i.cpucooler.cpucooler_details }}</td>
+                                <td>₹{{ i.cpucooler.cpucooler_price }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% if i.powersupply %}
+                            <tr>
+                                <td>{{ i.powersupply.brand.category.category_name }}</td>
+                                <td><img src="{{ i.powersupply.powersupply_photo.url }}" alt="Power Supply" width="80" height="80"></td>
+                                <td>{{ i.powersupply.brand.brand_name }}</td>
+                                <td>{{ i.powersupply.powersupply_name }}</td>
+                                <td>{{ i.powersupply.powersupply_details }}</td>
+                                <td>₹{{ i.powersupply.powersupply_price }}</td>
+                            </tr>
+                            {% endif %}
+
+                            {% for j in i.ram.all %}
+                            <tr>
+                                <td>{{ j.ram.brand.category.category_name }}</td>
+                                <td><img src="{{ j.ram.ram_photo.url }}" alt="RAM" width="80" height="80"></td>
+                                <td>{{ j.ram.brand.brand_name }}</td>
+                                <td>{{ j.ram.ram_name }}</td>
+                                <td>{{ j.ram.ram_details }}</td>
+                                <td>₹{{ j.ram.ram_price }}</td>
+                            </tr>
+                            {% endfor %}
+
+                            {% for k in i.rom.all %}
+                            <tr>
+                                <td>{{ k.rom.brand.category.category_name }}</td>
+                                <td><img src="{{ k.rom.rom_photo.url }}" alt="ROM" width="80" height="80"></td>
+                                <td>{{ k.rom.brand.brand_name }}</td>
+                                <td>{{ k.rom.rom_name }}</td>
+                                <td>{{ k.rom.rom_details }}</td>
+                                <td>₹{{ k.rom.rom_price }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="total-amount">Total Amount: ₹{{ i.custome_amount }}</div>
+
+            <div class="action-links text-center mt-3">
+                {% if i.custome_status == 1 %}
+                <a href="{% url 'Admin:acceptcustom' i.id %}" class="btn btn-primary">Accept</a>
+                <a href="{% url 'Admin:rejectcustom' i.id %}" class="btn btn-danger">Reject</a>
+                {% elif i.custome_status == 2 %}
+                <span class="text-success fw-bold">Accepted</span>
+                {% elif i.custome_status == 3 %}
+                <span class="text-danger fw-bold">Rejected</span>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if msga %}
+    <script>
+        alert("{{ msga }}");
+        window.location = "{% url 'Admin:viewcustomrequest' %}";
+    </script>
+    {% endif %}
+
+    {% if msgr %}
+    <script>
+        alert("{{ msgr }}");
+        window.location = "{% url 'Admin:viewcustomrequest' %}";
+    </script>
+    {% endif %}
+
+    <script>
+        // Bubble animation
+        const canvas = document.getElementById('bubbleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const bubbles = [];
+        const bubbleCount = 50;
+
+        class Bubble {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.radius = Math.random() * 30 + 10;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < bubbleCount; i++) {
+            bubbles.push(new Bubble());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            bubbles.forEach(bubble => {
+                bubble.update();
+                bubble.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

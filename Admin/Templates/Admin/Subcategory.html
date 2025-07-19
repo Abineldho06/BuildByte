@@ -1,0 +1,75 @@
+{% extends 'Admin/Header.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-center text-primary mb-4">Add Sub Category</h3>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="sel_cat" class="form-label">Category</label>
+                    <select name="sel_cat" id="sel_cat" class="form-select" required>
+                        <option value="sel">--- Select Category ---</option>
+                        {% for i in cat %}
+                        <option value="{{i.id}}">{{i.category_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="txt_sub" class="form-label">Sub Category Name</label>
+                    <input type="text" name="txt_sub" id="txt_sub" class="form-control" required>
+                </div>
+                <div class="text-center">
+                    <button type="submit" name="btn_sub" class="btn btn-success">Add</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <h3 class="text-center text-primary mt-5 mb-3">Sub Categories</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Category</th>
+                    <th>Sub Category</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in sub %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.category.category_name }}</td>
+                    <td>{{ i.subcategory_name }}</td>
+                    <td>
+                        <a href="{% url 'Admin:deletesubcategory' i.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No subcategories added yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if msg %}
+<script>
+    alert("{{msg}}")
+    window.location = "{% url 'Admin:subcategory' %}"
+</script>
+{% endif %}
+
+{% if msgd %}
+<script>
+    alert("{{msgd}}")
+    window.location = "{% url 'Admin:subcategory' %}"
+</script>
+{% endif %}
+{% endblock %}
