@@ -30,7 +30,7 @@ BuildByte is a Django-based web application that allows users to customize and c
 📸 Screenshots
 
 🔹 Homepage
-   ![Homepage](images/Homepage.png)
+   ![Homepage](images/homepage.png)
 
 🔹Loginpage
    ![Loginpage](images/loginpage.png)
