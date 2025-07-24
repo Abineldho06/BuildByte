@@ -1,6 +1,8 @@
 # BuildByte – Custom PC Builder Web App
 
-![BuildByte logo](BuildByte/Guest/static/Main/images/logo.png)
+<p align="left">
+  <img src="Guest/static/Main/images/logo.png" alt="BuildByte logo" width="200"/>
+</p>
 
 
 BuildByte is a Django-based web application that allows users to customize and configure personal computers by selecting compatible components like CPU, GPU, RAM, Storage, etc. This project was developed as part of my BCA final year.
